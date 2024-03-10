@@ -63,7 +63,7 @@ pydocstyle = ">=6.3"
 pytest = ">=8.1"
 
 [tool.poetry.dependencies]
-python = ">=3.12,<3.13"
+python = ">=3.11,<3.13"
 # OpenAI interface
 openai = ">=1.13"
 # LlamaIndex & related

@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from functools import cached_property
 import os
 from pathlib import Path
+from typing import TypeAlias
 
 from fsspec.spec import AbstractFileSystem
 from fsspec.implementations.local import LocalFileSystem
@@ -47,8 +48,8 @@ _S3_PROTOCOL_PREFIX_LEN: int = len(_S3_PROTOCOL_PREFIX)
 
 
 # explicit typing for clarity to developers/maintainers
-type DirOrFilePath = str
-type FilePathSet = frozenset[DirOrFilePath]
+DirOrFilePath: TypeAlias = str
+FilePathSet: TypeAlias = frozenset[DirOrFilePath]
 
 
 @dataclass(init=True, repr=True, eq=True, order=False, unsafe_hash=False, frozen=True,  # frozen -> hashable

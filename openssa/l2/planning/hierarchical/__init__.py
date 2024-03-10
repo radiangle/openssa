@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, asdict, field
 import json
-from typing import TYPE_CHECKING, TypedDict, Required, NotRequired
+from typing import TYPE_CHECKING, TypedDict, Required, NotRequired, TypeAlias
 
 from loguru import logger
 from tqdm import tqdm
@@ -29,7 +29,7 @@ class HTPDict(TypedDict, total=False):
     sub_plans: NotRequired[list[HTPDict]]
 
 
-type AskAnsPair = tuple[str, str]
+AskAnsPair: TypeAlias = tuple[str, str]
 
 
 @dataclass(init=True,
