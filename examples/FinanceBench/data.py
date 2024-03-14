@@ -12,11 +12,11 @@ from tqdm import tqdm
 load_dotenv()
 
 
-type DocName = str
-type FbId = str
-type Question = str
-type Answer = str
-type QAFunc = Callable[[FbId], Answer]
+DocName: type = str
+FbId: type = str
+Question: type = str
+Answer: type = str
+QAFunc: type = Callable[[FbId], Answer]
 
 
 BROKEN_OR_CORRUPT_DOC_NAMES: set[DocName] = {
