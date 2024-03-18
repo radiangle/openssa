@@ -39,7 +39,7 @@ FB_IDS_BY_DOC_NAME: dict[FbId, list[DocName]] = META_DF.groupby('doc_name').appl
 QS_BY_FB_ID: dict[FbId, Question] = META_DF.question.to_dict()
 
 
-LOCAL_CACHE_DIR_PATH: Path = Path(__file__).parent / '.data'
+LOCAL_CACHE_DIR_PATH: Path = Path(__file__).parent / 'data'
 LOCAL_CACHE_DOCS_DIR_PATH: Path = LOCAL_CACHE_DIR_PATH / 'docs'
 OUTPUT_FILE_PATH: Path = LOCAL_CACHE_DIR_PATH / 'output.csv'
 
