@@ -14,6 +14,7 @@ def get_or_create_file_resource(doc_name: DocName) -> FileResource | None:
             if (dir_path := cache_dir_path(doc_name))
             else None)
 
+#comment
 
 @enable_batch_qa
 @log_qa_and_update_output_file(output_name='RAG-Default')
