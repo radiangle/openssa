@@ -1,3 +1,6 @@
+llamaindex-generic-answer:
+	@poetry run python generic_llamaindex.py ${id}
+	
 rag-default-answer:
 	@poetry run python rag_default.py ${id}
 
