@@ -34,7 +34,7 @@ class Evaluator:
     def evaluate_each(self, questions: List[str], answers: List[str], ground_truths: List[str]) -> pd.DataFrame:
         """Evaluate scores for each question, answer, and ground truth."""
         f1 = self.f1_scores(answers, ground_truths)
-        cosine = self.cosine_scores(answers, ground_truths)
+        cosine = self.cosine_scores(questions, answers, ground_truths)
         correctness = self.correctness_scores(questions, answers, ground_truths)
         results = pd.DataFrame(
             {
@@ -79,38 +79,28 @@ class Evaluator:
         )
         return scores["f1"]
 
-    def cosine_scores(self, answers: List[str], ground_truths: List[str]):
+    def cosine_scores(self, questions: List[str], answers: List[str], ground_truths: List[str]):
         """Calculate Ada's embedding-based similarity."""
-        return asyncio.run(self.acosine_scores(answers, ground_truths))
+        scores = []
+        for question, answer, ground_truth in zip(questions, answers, ground_truths):
+            try:
+                score = self.cosine_evaluator.evaluate(query=question, response=answer, reference=ground_truth).score
+                scores.append(score)
+            except:
+                print(f"Error calculating cosine similarity for question: {question}.")
+        return scores
 
     def correctness_scores(
         self, questions: List[str], answers: List[str], ground_truths: List[str]
     ):
         """Calculate correctness scores."""
-        return asyncio.run(self.acorrectness_scores(questions, answers, ground_truths))
-
-    async def acosine_scores(self, answers: List[str], ground_truths: List[str]):
-        results = await asyncio.gather(
-            *[
-                self.cosine_evaluator.aevaluate(response=answer, reference=ground_truth)
-                for answer, ground_truth in zip(answers, ground_truths)
-            ]
-        )
-        scores = [result.score for result in results]
-        return scores
-
-    async def acorrectness_scores(
-        self, questions: List[str], answers: List[str], ground_truths: List[str]
-    ):
-        results = await asyncio.gather(
-            *[
-                self.correctness_evaluator.aevaluate(
-                    query=question, response=answer, reference=ground_truth
-                )
-                for question, answer, ground_truth in zip(questions, answers, ground_truths)
-            ]
-        )
-        scores = [result.score for result in results]
+        scores = []
+        for question, answer, ground_truth in zip(questions, answers, ground_truths):
+            try:
+                score = self.correctness_evaluator.evaluate(query=question, response=answer, reference=ground_truth).score
+                scores.append(score)
+            except:
+                print(f"Error calculating correctness for question: {question}.")
         return scores
 
 
