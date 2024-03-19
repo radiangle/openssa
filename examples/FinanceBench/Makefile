@@ -1,6 +1,15 @@
-llamaindex-generic-answer:
-	@poetry run python generic_llamaindex.py ${id}
-	
+llamaindex-rag-default-answer:
+	@poetry run python llamaindex_rag_default.py ${id}
+
+llamaindex-finetuned-embed-answer:
+	@poetry run python llamaindex_finetuned_embed_only.py ${id}
+
+llamaindex-finetuned-lm-answer:
+	@poetry run python llamaindex_finetuned_lm_only.py ${id}
+
+llamaindex-finetuned-both-answer:
+	@poetry run python llamaindex_finetuned_embed_and_lm.py ${id}
+
 rag-default-answer:
 	@poetry run python rag_default.py ${id}
 

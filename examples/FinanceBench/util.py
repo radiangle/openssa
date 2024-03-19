@@ -5,8 +5,8 @@ from loguru import logger
 from pandas import DataFrame, read_csv
 from tqdm import tqdm
 
-from data import FbId, Answer, FB_ID_COL_NAME, META_DF, FB_IDS, DOC_NAMES_BY_FB_ID, QS_BY_FB_ID, OUTPUT_FILE_PATH
-
+from data import FbId, Answer, FB_ID_COL_NAME, META_DF, FB_IDS, DOC_NAMES_BY_FB_ID, QS_BY_FB_ID, OUTPUT_FILE_PATH, LOCAL_CACHE_DIR_PATH
+from pathlib import Path
 
 type QAFunc = Callable[[FbId], Answer]
 
@@ -33,9 +33,9 @@ class log_qa_and_update_output_file:  # noqa: N801
         def decorated_qa_func(fb_id: FbId) -> Answer:
             logger.info(f'\n{DOC_NAMES_BY_FB_ID[fb_id]}:\n{QS_BY_FB_ID[fb_id]}\n'
                         f'\n{self.output_name.upper()}:\n{(answer := qa_func(fb_id))}\n')
-
-            if OUTPUT_FILE_PATH.is_file():
-                output_df: DataFrame = read_csv(OUTPUT_FILE_PATH, index_col=FB_ID_COL_NAME)
+            OUTPUT_FILE_PATH_EXP =  LOCAL_CACHE_DIR_PATH / Path (self.output_name + '_output.csv')  # noqa: N806, F823
+            if OUTPUT_FILE_PATH_EXP.is_file():
+                output_df: DataFrame = read_csv(OUTPUT_FILE_PATH_EXP, index_col=FB_ID_COL_NAME)
 
             else:
                 output_df: DataFrame = META_DF[['doc_name', 'question', 'evidence_text', 'page_number', 'answer']]
@@ -43,7 +43,7 @@ class log_qa_and_update_output_file:  # noqa: N801
 
             output_df.loc[fb_id, self.output_name] = answer
 
-            output_df.to_csv(OUTPUT_FILE_PATH, index=True)
+            output_df.to_csv(OUTPUT_FILE_PATH_EXP, index=True)
 
             return answer
 
